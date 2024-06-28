@@ -1,0 +1,65 @@
+/* RequestsSummary.css */
+.requests-summary-tabs {
+  padding: 10px;
+}
+
+.requests-summary-tab {
+  padding: 10px;
+  background-color: rgb(77, 77, 77);
+  border: none;
+  border-radius: 20px;
+  margin: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.requests-summary-tab.active {
+  background-color: #ADE4C0;
+}
+
+.ticket-table-wrapper {
+  margin: 32px;
+  width: 70vw;
+  max-height: 50vh; /* Adjust this value as needed */
+  overflow-y: auto;
+  border: 1px solid #ADE4C0;
+  border-radius: 20px;
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ticket-table-row {
+  cursor: pointer;
+}
+
+.ticket-table td {
+  padding: 8px;
+}
+
+.ticket-table th {
+  position: sticky;
+  top: 0;
+  background-color: rgba(173, 228, 192, 1);
+  color: black;
+  padding: 4px 0 !important; /* remove default side padding on th*/
+}
+
+.ticket-table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ticket-table td.description {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.requests-summary p {
+  color: #888;
+}
+
+.no-tickets-found-message{
+  margin-top: 2%;
+}

@@ -1,0 +1,67 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #212121;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.App-header {
+  background-color: #212121;
+  min-height: 12vh;
+  margin-top: 3vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #ADE4C0;
+}
+
+.submit-new-request{
+  border: 1px solid #ADE4C0;
+  padding: 16px;
+  margin:  16px 32px;
+  border-radius: 24px;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-request-form-field {
+  background: rgb(77, 77, 77);
+  color: white;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin: 4px;
+  padding: 6px 10px;
+  width: 40%;
+}
+
+.submit-request-description-field {
+  background: rgb(77, 77, 77);
+  color: white;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin: 4px;
+  padding: 10px;
+  width: 80%;
+  height: 12vh; 
+  resize: none !important; 
+}
+
+.submit-ticket-button{
+  margin: 16px;
+  padding: 8px;
+  width: 30%;
+  cursor: pointer;
+  background-color: #ADE4C0;
+  color: black;
+  font-weight:600;
+  border-radius: 25px;
+  border: none;
+}

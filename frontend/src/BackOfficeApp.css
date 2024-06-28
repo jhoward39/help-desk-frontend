@@ -1,0 +1,20 @@
+/* BackOfficeApp.css */
+.App {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.back-office-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.ticket-details {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ADE4C0;
+  border-radius: 10px;
+  background-color: rgba(173, 228, 192, 0.5);
+  width: 70vw;
+}
