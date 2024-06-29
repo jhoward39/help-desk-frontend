@@ -2,6 +2,7 @@ import React, {useState }from 'react';
 import './RequestsSummary.css';
 import { Ticket } from './interfaces';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { format } from 'date-fns';
 
 interface RequestsSummaryProps {
   tickets: Ticket[];
@@ -44,7 +45,7 @@ const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, onTicketSele
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Description</th>
+              <th>Created</th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +68,7 @@ const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, onTicketSele
                       <span>{ticket.email.length > 25 ? ticket.email.substring(0, 25) + '...' : ticket.email}</span>
                     </OverlayTrigger>
                   </td>
-                  <td>{ticket.description.length > 40 ? ticket.description.substring(0, 40) + '...' : ticket.description}</td>
+                  <td>{format(new Date(ticket.created_at), 'MMM dd, yy hh:mm:ss a')}</td>
                 </tr>
               ))
             ) : (

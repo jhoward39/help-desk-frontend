@@ -7,4 +7,5 @@ export interface Ticket {
   status: 'NEW' | 'IN_PROGRESS' | 'RESOLVED';
   created_at: string;
   updated_at: string;
+  reply: string | null;
 }

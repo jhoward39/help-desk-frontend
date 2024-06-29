@@ -4,14 +4,14 @@
   background-color: #212121;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .App-header {
   background-color: #212121;
   min-height: 12vh;
-  margin-top: 3vh;
+  top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,10 +20,24 @@
   color: #ADE4C0;
 }
 
+.submit-new-ticket-label{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 0 8px ;
+}
+
+.submit-new-ticket-label-text{
+  color: #ADE4C0;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
 .submit-new-request{
   border: 1px solid #ADE4C0;
   padding: 16px;
   margin:  16px 32px;
+  margin-top: 0;
   border-radius: 24px;
   width: 60vw;
   display: flex;
@@ -49,7 +63,7 @@
   outline: none;
   margin: 4px;
   padding: 10px;
-  width: 80%;
+  width: 90%;
   height: 12vh; 
   resize: none !important; 
 }
@@ -64,4 +78,29 @@
   font-weight:600;
   border-radius: 25px;
   border: none;
+}
+
+.user-message {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: left; /* Align text to the left for better readability */
+  max-width: 70vw;
+  min-width: 50vw;
+  white-space: pre-wrap;
+}
+
+.user-message-success {
+  border: 1px solid #ADE4C0;
+  background-color: rgba(173, 228, 192, 0.6);
+}
+
+.user-message-error {
+  border: 1px solid red;
+  color: rgb(233, 178, 178);
+  background-color: rgba(185, 23, 23, 0.55);
+}
+
+.spinner-border{
+  color: #ADE4C0;
 }

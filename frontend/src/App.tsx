@@ -1,24 +1,21 @@
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { useState, FormEvent } from 'react';
 import './App.css';
-import RequestsSummary from './RequestsSummary'
 import { Ticket } from './interfaces';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const App: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-
-  useEffect(() => {
-    fetch('http://localhost:8000/api/support-tickets/')
-      .then(response => response.json())
-      .then(data => setTickets(data))
-      .catch(error => console.error('Error fetching tickets:', error));
-  }, []);
+  const [userMessage, setUserMessage] = useState<{'kind': ('user-message-error' | 'user-message-success'), 'message': string} | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const newTicket = { name, email, description };
 
     fetch('http://localhost:8000/api/support-tickets/', {
@@ -34,43 +31,74 @@ const App: React.FC = () => {
         setName('');
         setEmail('');
         setDescription('');
+        setUserMessage({"kind": "user-message-success", "message": "You successfully submitted a ticket. \n We will get back to you within 3 business days."})
       })
-      .catch(error => console.error('Error posting ticket:', error));
+      .catch(()=> {
+        setUserMessage({"kind": "user-message-error", "message": "Problem submitting ticket. Please try again later."})
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
-    <div className="App">
+    <>
       <header className="App-header">
         <h2>ZELP DESK</h2>
       </header>
-      <form className="submit-new-request" onSubmit={handleSubmit}>
-        <input
-          className="submit-request-form-field"
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          className="submit-request-form-field"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <textarea
-          className="submit-request-description-field"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        ></textarea>
-        <button type="submit" className="submit-ticket-button">Submit Ticket</button>
-      </form>
-      <RequestsSummary tickets={tickets} onTicketSelect={() => {}}/>
-    </div>
+  
+      <div className="App">
+        <form className="submit-new-request" onSubmit={handleSubmit}>
+          <div className="submit-new-ticket-label">
+            <h5 className="submit-new-ticket-label-text">Make a new ticket</h5>
+          </div>
+          <input
+            className="submit-request-form-field"
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              setUserMessage(null);
+            }}
+            required
+          />
+          <input
+            className="submit-request-form-field"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setUserMessage(null);
+            }}
+            required
+          />
+          <textarea
+            className="submit-request-description-field"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              setUserMessage(null);
+            }}
+            required
+          ></textarea>
+          {!isLoading ? (
+            <button type="submit" className="submit-ticket-button" disabled={isLoading}>Submit Ticket</button>
+          ): (
+            <div className="spinner-border m-2" role="status"/>
+          )}
+          
+        </form>
+        {userMessage && 
+          <div 
+              className={`user-message ${userMessage.kind}`}
+          >
+            {userMessage.message}
+          </div>}
+      </div>
+    </>
   );
 }
 
