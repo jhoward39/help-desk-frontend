@@ -11,7 +11,7 @@ const BackOfficeApp: React.FC = () => {
   const intervalIdRef = useRef<number | null>(null);
 
   const getTickets = () => {
-    fetch('http://localhost:8000/api/support-tickets/')
+    fetch('https://zelpdeskapi.azurewebsites.net/api/support-tickets/')
       .then(response => response.json())
       .then(data => setTickets(data))
       .catch(error => console.error('Error fetching tickets:', error));
@@ -52,7 +52,7 @@ const BackOfficeApp: React.FC = () => {
 
   const handleDeleteTicket = () => {
     if (selectedTicket && window.confirm("Are you sure you want to delete this ticket?"))  {
-      fetch(`http://localhost:8000/api/support-tickets/${selectedTicket.id}/`, {
+      fetch(`https://zelpdeskapi.azurewebsites.net/api/support-tickets/${selectedTicket.id}/`, {
         method: 'DELETE',
       })
         .then(() => {
@@ -65,7 +65,7 @@ const BackOfficeApp: React.FC = () => {
 
   const handleChangeStatus = (status: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => {
     if (selectedTicket) {
-      fetch(`http://localhost:8000/api/support-tickets/${selectedTicket.id}/`, {
+      fetch(`https://zelpdeskapi.azurewebsites.net/api/support-tickets/${selectedTicket.id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

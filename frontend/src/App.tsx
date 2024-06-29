@@ -18,7 +18,7 @@ const App: React.FC = () => {
 
     const newTicket = { name, email, description };
 
-    fetch('http://localhost:8000/api/support-tickets/', {
+    fetch('https://zelpdeskapi.azurewebsites.net/api/support-tickets/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
