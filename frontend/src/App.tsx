@@ -18,7 +18,7 @@ const App: React.FC = () => {
 
     const newTicket = { name, email, description };
 
-    fetch('https://zelpdeskapi.azurewebsites.net/api/support-tickets/', {
+    fetch('https://backend-holy-flower-6086.fly.dev/api/support-tickets/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

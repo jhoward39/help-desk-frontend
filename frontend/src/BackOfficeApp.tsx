@@ -1,63 +1,45 @@
-import React, { useEffect, useState, useRef } from 'react';
-import './BackOfficeApp.css';
-import RequestsSummary from './RequestsSummary';
-import { Ticket } from './interfaces';
-import { Dropdown } from 'react-bootstrap';
+import React, { useEffect, useState, useRef } from 'react'
+import './BackOfficeApp.css'
+import RequestsSummary from './RequestsSummary'
+import { Ticket } from './interfaces'
+import { Dropdown } from 'react-bootstrap'
 import { format } from 'date-fns'
+import ConfirmModal from './ConfirmModal'
 
 const BackOfficeApp: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-  const intervalIdRef = useRef<number | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [reply, setReply] = useState<string>('');
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const getTickets = () => {
-    fetch('https://zelpdeskapi.azurewebsites.net/api/support-tickets/')
+    setIsLoading(true);
+
+    fetch('https://backend-holy-flower-6086.fly.dev/api/support-tickets/')
       .then(response => response.json())
       .then(data => setTickets(data))
-      .catch(error => console.error('Error fetching tickets:', error));
+      .catch(error => console.error('Error fetching tickets:', error))
+      .finally(() => setIsLoading(false));
   }
-
   
   useEffect(() => {
-    const handleMouseMove = () => {
-      if (!intervalIdRef.current) {
-        getTickets();
-        intervalIdRef.current = window.setInterval(getTickets, 4000); // Check for new tickets every 4 seconds
-      }
-    };
-
-    const handleMouseLeave = () => { // Clear the interval when the mouse leaves
-      if (intervalIdRef.current) {
-        clearInterval(intervalIdRef.current);
-        intervalIdRef.current = null;
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      if (intervalIdRef.current) {
-        clearInterval(intervalIdRef.current);
-      }
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseleave', handleMouseLeave);
-    };
+    getTickets();
   }, []);
   
-
   const handleTicketSelect = (ticket: Ticket) => {
     setSelectedTicket(ticket);
   };
 
   const handleDeleteTicket = () => {
     if (selectedTicket && window.confirm("Are you sure you want to delete this ticket?"))  {
-      fetch(`https://zelpdeskapi.azurewebsites.net/api/support-tickets/${selectedTicket.id}/`, {
+      fetch(`https://backend-holy-flower-6086.fly.dev/api/support-tickets/${selectedTicket.id}/`, {
         method: 'DELETE',
       })
         .then(() => {
           setTickets(tickets.filter(ticket => ticket.id !== selectedTicket.id));
           setSelectedTicket(null);
+          getTickets();
         })
         .catch(error => console.error('Error deleting ticket:', error));
     }
@@ -65,7 +47,7 @@ const BackOfficeApp: React.FC = () => {
 
   const handleChangeStatus = (status: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => {
     if (selectedTicket) {
-      fetch(`https://zelpdeskapi.azurewebsites.net/api/support-tickets/${selectedTicket.id}/`, {
+      fetch(`https://backend-holy-flower-6086.fly.dev/api/support-tickets/${selectedTicket.id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -76,16 +58,42 @@ const BackOfficeApp: React.FC = () => {
         .then((updatedTicket: Ticket) => {
           setTickets(tickets.map(ticket => ticket.id === updatedTicket.id ? updatedTicket : ticket));
           setSelectedTicket(updatedTicket);
+          getTickets();
         })
         .catch(error => console.error('Error updating ticket:', error));
     }
   };
+
+  const handleConfirm = () => {
+    if (selectedTicket) {
+      fetch(`https://backend-holy-flower-6086.fly.dev/api/support-tickets/${selectedTicket.id}/`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      })
+        .then(response => response.json())
+        .then((updatedTicket: Ticket) => {
+          setTickets(tickets.map(ticket => ticket.id === updatedTicket.id ? updatedTicket : ticket));
+          setSelectedTicket(updatedTicket);
+          getTickets();
+        })
+        .catch(error => console.error('Error updating ticket:', error));
+    }
+  }
 
   return (
     <>
       <header className="App-header">
         <h2>ZELP DESK ADMIN</h2>
       </header>
+
+      <ConfirmModal 
+        show={showModal} 
+        handleClose={() => setShowModal(false)} 
+        handleConfirm={handleConfirm} 
+      />
     
       <div className="App">
         
@@ -109,17 +117,34 @@ const BackOfficeApp: React.FC = () => {
               </div>
               <p className="ticket-detail"><strong>Name:</strong> {selectedTicket.name}</p>
               <p className="ticket-detail"><strong>Email:</strong> {selectedTicket.email}</p>
-              <p className="ticket-detail"><strong>Created:</strong> {format(new Date(selectedTicket.created_at), 'MMM dd, yy hh:mm:ss a')}</p>
-              <p className="ticket-detail"><strong>Last Updated:</strong> {format(new Date(selectedTicket.updated_at), 'MMM dd, yy hh:mm:ss a')}</p>
+              <p className="ticket-detail"><strong>Created:</strong> {format(new Date(selectedTicket.created_at), 'MMM dd, yyyy hh:mm:ss a')}</p>
+              <p className="ticket-detail"><strong>Last Updated:</strong> {format(new Date(selectedTicket.updated_at), 'MMM dd, yyyy hh:mm:ss a')}</p>
               <p className="ticket-detail ticket-detail-description"><strong>Description:</strong> {selectedTicket.description}</p>
-              <p className="ticket-detail ticket-detail-description"><strong>Reply:</strong> {selectedTicket.reply}</p>
+              { selectedTicket.reply ? (
+                <p className="ticket-detail ticket-detail-description"><strong>Reply:</strong> {selectedTicket.reply }</p>
+              ): (
+                <>
+                  <textarea
+                    className="ticket-reply-field"
+                    placeholder="Reply"
+                    value={reply}
+                    onChange={(e) => {
+                      setReply(e.target.value);
+                      
+                    }}
+                    required
+                  ></textarea>
+                  <button className="submit-reply-button" onClick={() => setShowModal(true)}>Submit Reply</button>
+                </>
+              )}
+              
             </>
           ) : (
-            <p className="ticket-detail"><strong>No Ticket Selected</strong> <br/>Click on a ticket below</p>
+            isLoading ? <strong>Loading...</strong> : <p className="ticket-detail"><strong>No Ticket Selected</strong> <br/>Click on a ticket below</p> 
           )}
         </div>
 
-        <RequestsSummary tickets={tickets} onTicketSelect={handleTicketSelect} />
+        <RequestsSummary tickets={tickets} onTicketSelect={handleTicketSelect} isLoading={isLoading} />
       </div>
     </>
   );

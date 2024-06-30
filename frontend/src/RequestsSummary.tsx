@@ -6,10 +6,11 @@ import { format } from 'date-fns';
 
 interface RequestsSummaryProps {
   tickets: Ticket[];
+  isLoading: boolean;
   onTicketSelect: (ticket: Ticket) => void;
 }
 
-const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, onTicketSelect }) => {
+const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, isLoading, onTicketSelect }) => {
   const [selectedTab, setSelectedTab] = useState<'NEW' | 'IN_PROGRESS' | 'RESOLVED'>('NEW');
 
   const handleTabClick = (tab: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => {
@@ -68,12 +69,12 @@ const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, onTicketSele
                       <span>{ticket.email.length > 25 ? ticket.email.substring(0, 25) + '...' : ticket.email}</span>
                     </OverlayTrigger>
                   </td>
-                  <td>{format(new Date(ticket.created_at), 'MMM dd, yy hh:mm:ss a')}</td>
+                  <td>{format(new Date(ticket.created_at), 'MMM dd, yyyy hh:mm:ss a')}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={3}>No support tickets found.</td>
+                {isLoading ? <td colSpan={3}>Loading...</td> : <td colSpan={3}>No support tickets found.</td>}
               </tr>
             )}
           </tbody>
