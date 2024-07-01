@@ -1,27 +1,28 @@
-// ConfirmModal.tsx
+// src/ConfirmModal.tsx
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import './ConfirmModal.css'
 
 interface ConfirmModalProps {
   show: boolean;
+  confirmMessage: string;
   handleClose: () => void;
   handleConfirm: () => void;
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ show, handleClose, handleConfirm }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ show, confirmMessage, handleClose, handleConfirm }) => {
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
+    <Modal show={show} onHide={handleClose} className="confirm-modal">
+      <Modal.Header closeButton >
         <Modal.Title>Confirm Submission</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Are you sure you want to submit your reply?</Modal.Body>
+      <Modal.Body>{confirmMessage}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          No
+        <Button className="modal-cancel" onClick={handleClose}>
+          Cancel
         </Button>
-        <Button variant="primary" onClick={handleConfirm}>
-          Yes
+        <Button className="modal-confirm" onClick={handleConfirm}>
+          Confirm
         </Button>
       </Modal.Footer>
     </Modal>
@@ -29,4 +30,3 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ show, handleClose, handleCo
 };
 
 export default ConfirmModal;
-

@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.3.0",
     "bootstrap-icons": "^1.11.3",
     "date-fns": "^3.6.0",
+    "lodash.debounce": "^4.0.8",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.3",
     "react-dom": "^18.3.1",
@@ -42,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9"
   }
 }

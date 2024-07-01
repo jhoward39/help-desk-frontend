@@ -8,4 +8,5 @@ export interface Ticket {
   created_at: string;
   updated_at: string;
   reply: string | null;
+  is_reply_draft: boolean;
 }

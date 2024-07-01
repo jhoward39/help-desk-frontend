@@ -1,4 +1,4 @@
-import React, {useState }from 'react';
+import React from 'react';
 import './RequestsSummary.css';
 import { Ticket } from './interfaces';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -7,15 +7,12 @@ import { format } from 'date-fns';
 interface RequestsSummaryProps {
   tickets: Ticket[];
   isLoading: boolean;
-  onTicketSelect: (ticket: Ticket) => void;
+  selectedTab: 'NEW' | 'IN_PROGRESS' | 'RESOLVED';
+  setSelectedTab: (tab: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => void;
+  onTicketSelect: (ticket: Ticket) => void 
 }
 
-const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, isLoading, onTicketSelect }) => {
-  const [selectedTab, setSelectedTab] = useState<'NEW' | 'IN_PROGRESS' | 'RESOLVED'>('NEW');
-
-  const handleTabClick = (tab: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => {
-    setSelectedTab(tab);
-  };
+const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, isLoading, selectedTab, setSelectedTab, onTicketSelect }) => {
 
   const counts = tickets.reduce(
     (acc, ticket) => {
@@ -30,13 +27,13 @@ const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, isLoading, o
   return (
     <div className="requests-summary">
       <div className="requests-summary-tabs">
-        <button onClick={() => handleTabClick('NEW')} className={`requests-summary-tab ${selectedTab === 'NEW' ? 'active' : ''}`}>
+        <button onClick={() => setSelectedTab('NEW')} className={`requests-summary-tab ${selectedTab === 'NEW' ? 'active' : ''}`}>
           New ({counts.NEW})
         </button>
-        <button onClick={() => handleTabClick('IN_PROGRESS')} className={`requests-summary-tab ${selectedTab === 'IN_PROGRESS' ? 'active' : ''}`}>
+        <button onClick={() => setSelectedTab('IN_PROGRESS')} className={`requests-summary-tab ${selectedTab === 'IN_PROGRESS' ? 'active' : ''}`}>
           In Progress ({counts.IN_PROGRESS})
         </button>
-        <button onClick={() => handleTabClick('RESOLVED')} className={`requests-summary-tab ${selectedTab === 'RESOLVED' ? 'active' : ''}`}>
+        <button onClick={() => setSelectedTab('RESOLVED')} className={`requests-summary-tab ${selectedTab === 'RESOLVED' ? 'active' : ''}`}>
           Resolved ({counts.RESOLVED})
         </button>
       </div>
@@ -46,12 +43,12 @@ const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, isLoading, o
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Created</th>
+              <th>Last Updated</th>
             </tr>
           </thead>
           <tbody>
             {filteredTickets.length > 0 ? (
-              filteredTickets.reverse().map(ticket => (
+              filteredTickets.map(ticket => (
                 <tr key={ticket.id} className="ticket-table-row" onClick={() => onTicketSelect(ticket)}>
                   <td>
                     <OverlayTrigger
@@ -69,7 +66,7 @@ const RequestsSummary: React.FC<RequestsSummaryProps> = ({ tickets, isLoading, o
                       <span>{ticket.email.length > 25 ? ticket.email.substring(0, 25) + '...' : ticket.email}</span>
                     </OverlayTrigger>
                   </td>
-                  <td>{format(new Date(ticket.created_at), 'MMM dd, yyyy hh:mm:ss a')}</td>
+                  <td>{format(new Date(ticket.updated_at), 'MMM dd, yyyy hh:mm:ss a')}</td>
                 </tr>
               ))
             ) : (
