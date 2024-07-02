@@ -19,7 +19,6 @@
  * - React: For building the UI components.
  * - react-bootstrap: For UI components like Dropdown and Modal.
  * - date-fns: For formatting dates.
- * - lodash.debounce: For debouncing reply submissions.
  * 
  * Note:
  * This component uses several helper components and utilities:
@@ -39,7 +38,6 @@ import { Ticket } from './interfaces';
 import { statusDisplayMap } from './statusMapping';
 import { Dropdown } from 'react-bootstrap';
 import { format} from 'date-fns';
-import debounce from 'lodash.debounce';
 
 
 const BackOfficeApp: React.FC = () => {
@@ -137,6 +135,7 @@ const BackOfficeApp: React.FC = () => {
         .then((updatedTicket) => {
           setTickets(tickets.map(ticket => ticket.id === updatedTicket.id ? updatedTicket : ticket));
           setSelectedTicket(updatedTicket);
+          console.log("SEND THE USER THE EMAIL: ", reply)
           if (!isDraft) {
             getTickets();
           }
@@ -150,26 +149,15 @@ const BackOfficeApp: React.FC = () => {
     }
   }
 
-  //handle saving draft as user types AND when user submits
-  const debouncedSubmitReply = debounce(() => {
-    submitReply(true); // Only save draft every second the user is typing.
-  }, 1000);
-
-  useEffect(() => {
-    debouncedSubmitReply();
-    return () => {
-      debouncedSubmitReply.cancel();
-    };
-  }, [reply,debouncedSubmitReply]);
-
-
   const handleSubmitReply = () => {
-    setConfirmMessage("Replying will resolve the ticket and notify the ticket originator");
+    
     setHandleConfirm(() => {
       return () => {
         submitReply(false);
-      }
+      };
+      
     });
+    setConfirmMessage("Replying will resolve the ticket and notify the ticket originator");
     setShowModal(true);
   };
 
