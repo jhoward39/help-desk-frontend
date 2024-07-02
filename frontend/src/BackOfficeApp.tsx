@@ -134,7 +134,7 @@ const BackOfficeApp: React.FC = () => {
         body: JSON.stringify({ reply, is_reply_draft: isDraft }),
       })
         .then(response => response.json())
-        .then((updatedTicket: Ticket) => {
+        .then((updatedTicket) => {
           setTickets(tickets.map(ticket => ticket.id === updatedTicket.id ? updatedTicket : ticket));
           setSelectedTicket(updatedTicket);
           if (!isDraft) {
@@ -148,16 +148,20 @@ const BackOfficeApp: React.FC = () => {
           setIsLoading(false);
         });
     }
-  };
+  }
 
   //handle saving draft as user types AND when user submits
   const debouncedSubmitReply = debounce(() => {
-    submitReply(true); //only save draft every second the user is typing.
+    submitReply(true); // Only save draft every second the user is typing.
   }, 1000);
 
   useEffect(() => {
     debouncedSubmitReply();
-  }, [reply]);
+    return () => {
+      debouncedSubmitReply.cancel();
+    };
+  }, [reply,debouncedSubmitReply]);
+
 
   const handleSubmitReply = () => {
     setConfirmMessage("Replying will resolve the ticket and notify the ticket originator");
