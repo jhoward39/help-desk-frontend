@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
-import './App.css';
-import { Ticket } from './interfaces';
+import '@components/App/App.css';
+import { Ticket } from '@customTypes/interfaces';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 

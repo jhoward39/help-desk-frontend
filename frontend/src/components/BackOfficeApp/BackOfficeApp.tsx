@@ -32,10 +32,10 @@
 
 import React, { useEffect, useState} from 'react';
 import './BackOfficeApp.css';
-import ConfirmModal from './ConfirmModal';
-import RequestsSummary from './RequestsSummary';
-import { Ticket } from './interfaces';
-import { statusDisplayMap } from './statusMapping';
+import ConfirmModal from '@components/ConfirmModal/ConfirmModal';
+import RequestsSummary from '@components/RequestsSummary/RequestsSummary';
+import { Ticket } from '@customTypes/interfaces';
+import { statusDisplayMap } from '@customUtils/statusMapping';
 import { Dropdown } from 'react-bootstrap';
 import { format} from 'date-fns';
 

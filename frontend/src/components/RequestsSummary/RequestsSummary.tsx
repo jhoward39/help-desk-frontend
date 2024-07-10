@@ -30,7 +30,7 @@
 
 import React from 'react';
 import './RequestsSummary.css';
-import { Ticket } from './interfaces';
+import { Ticket } from '@customTypes/interfaces';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { format } from 'date-fns';
 

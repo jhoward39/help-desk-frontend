@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import BackOfficeApp from './BackOfficeApp'
+import App from '@components/App/App';
+import BackOfficeApp from '@components/BackOfficeApp/BackOfficeApp';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
