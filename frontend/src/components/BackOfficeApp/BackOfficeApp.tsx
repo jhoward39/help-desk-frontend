@@ -27,11 +27,10 @@
  * - Ticket: An interface defining the structure of a support ticket.
  * - statusDisplayMap: A utility for mapping ticket status codes to display strings.
  * 
- * Author: Joseph Howard
  */
 
 import React, { useEffect, useState} from 'react';
-import './BackOfficeApp.css';
+import '@components/BackOfficeApp/BackOfficeApp.css';
 import ConfirmModal from '@components/ConfirmModal/ConfirmModal';
 import RequestsSummary from '@components/RequestsSummary/RequestsSummary';
 import { Ticket } from '@customTypes/interfaces';
@@ -65,6 +64,9 @@ const BackOfficeApp: React.FC = () => {
   }, []);
   
   const handleTicketSelect = (ticket: Ticket) => {
+    if (selectedTicket?.is_reply_draft && reply !== ''){
+      submitReply(true);
+    }
     setSelectedTicket(ticket);
     setReply(ticket.reply || ''); // fill reply box with draft reply
   };
@@ -88,7 +90,7 @@ const BackOfficeApp: React.FC = () => {
         });
     }
     else (
-      console.log("Cannot delete tickets in resolved state")
+      console.log("Cannot delete tickets in resolved state") // this in theory is never shown 
     )
   };
 
@@ -135,9 +137,9 @@ const BackOfficeApp: React.FC = () => {
         .then((updatedTicket) => {
           setTickets(tickets.map(ticket => ticket.id === updatedTicket.id ? updatedTicket : ticket));
           setSelectedTicket(updatedTicket);
-          console.log("SEND THE USER THE EMAIL: ", reply)
           if (!isDraft) {
             getTickets();
+            console.log("SEND THE USER THE EMAIL: ", reply);
           }
         })
         .catch(error => console.error('Error updating ticket:', error))
@@ -166,7 +168,6 @@ const BackOfficeApp: React.FC = () => {
     setConfirmMessage("This action is irreversable");
     setHandleConfirm(() => deleteTicket);
     setShowModal(true);
-    console.log("show modal", showModal);
   }
 
   const handleChangeStatus = (status: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => {

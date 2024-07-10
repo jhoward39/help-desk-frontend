@@ -1,7 +1,7 @@
 // src/ConfirmModal.tsx
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import './ConfirmModal.css'
+import '@components/ConfirmModal/ConfirmModal.css'
 
 interface ConfirmModalProps {
   show: boolean;
