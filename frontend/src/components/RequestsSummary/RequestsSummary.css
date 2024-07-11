@@ -11,6 +11,7 @@
   margin: 4px;
   cursor: pointer;
   font-weight: 600;
+  color: black;
 }
 
 .requests-summary-tab.active {

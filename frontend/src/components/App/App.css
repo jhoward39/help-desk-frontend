@@ -71,13 +71,14 @@
 .submit-ticket-button{
   margin: 16px;
   padding: 8px;
-  width: 30%;
+  width: fit-content;
   cursor: pointer;
   background-color: #ADE4C0;
   color: black;
   font-weight:600;
   border-radius: 25px;
   border: none;
+  white-space: nowrap;
 }
 
 .user-message {
@@ -103,4 +104,17 @@
 
 .spinner-border{
   color: #ADE4C0;
+}
+
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+  .submit-new-request {
+    width: 80vw;
+  }
+
+  .submit-request-form-field,
+  .submit-request-description-field{
+    width: 100%;
+  }
 }
