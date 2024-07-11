@@ -1,44 +1,34 @@
 import React, { useState, FormEvent } from 'react';
 import '@components/App/App.css';
 import { Ticket } from '@customTypes/interfaces';
+import { useTicketActions } from '@customUtils/useTicketActions';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const App: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const { handleTicketPost } = useTicketActions(tickets, setTickets);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [userMessage, setUserMessage] = useState<{'kind': ('user-message-error' | 'user-message-success'), 'message': string} | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const newTicket = { name, email, description };
-
-    fetch('https://backend-holy-flower-6086.fly.dev/api/support-tickets/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newTicket),
-    })
-      .then(response => response.json())
-      .then((data: Ticket) => {
-        setTickets([...tickets, data]);
-        setName('');
-        setEmail('');
-        setDescription('');
-        setUserMessage({"kind": "user-message-success", "message": "You successfully submitted a ticket. \n We will get back to you within 3 business days."})
-      })
-      .catch(()=> {
-        setUserMessage({"kind": "user-message-error", "message": "Problem submitting ticket. Please try again later."})
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    try {
+      await handleTicketPost(name, email, description);
+      setName('');
+      setEmail('');
+      setDescription('');
+      setUserMessage({"kind": "user-message-success", "message": "You successfully submitted a ticket. \n We will get back to you within 3 business days."});
+    } catch {
+      setUserMessage({"kind": "user-message-error", "message": "Problem submitting ticket. Please try again later."});
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -89,7 +79,6 @@ const App: React.FC = () => {
           ): (
             <div className="spinner-border m-2" role="status"/>
           )}
-          
         </form>
         {userMessage && 
           <div 

@@ -4,6 +4,7 @@ import '@components/BackOfficeApp/BackOfficeApp.css';
 import ConfirmModal from '@components/ConfirmModal/ConfirmModal';
 import TicketDisplay from '@components/TicketDisplay/TicketDisplay';
 import RequestsSummary from '@components/RequestsSummary/RequestsSummary';
+import { statusDisplayMap } from '@customUtils/statusMapping';
 import { Ticket } from '@customTypes/interfaces'
 import { useTickets } from '@customUtils/useTickets';
 import { useTicketActions } from '@customUtils/useTicketActions';
@@ -31,18 +32,18 @@ const BackOfficeApp: React.FC = () => {
 
   const handleSubmitReply = () => {
     setHandleConfirm(() => () => submitReply(selectedTicket!, reply, false));
-    setConfirmMessage("Replying will resolve the ticket and notify the ticket originator");
+    setConfirmMessage("Replying will resolve the ticket and notify the ticket originator.");
     setShowModal(true);
   };
 
   const handleDeleteTicket = () => {
-    setConfirmMessage("This action is irreversible");
+    setConfirmMessage("Caution, this action is irreversible.");
     setHandleConfirm(() => () => deleteTicket(selectedTicket!));
     setShowModal(true);
   };
 
   const handleChangeStatus = (status: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => {
-    setConfirmMessage("Are you sure you want to force the status change?");
+    setConfirmMessage(`Are you sure you want to force this ticket's status to '${statusDisplayMap[status]}'?`);
     setHandleConfirm(() => () => changeStatus(selectedTicket!, status));
     setShowModal(true);
   };

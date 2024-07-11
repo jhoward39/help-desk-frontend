@@ -14,7 +14,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ show, confirmMessage, handl
   return (
     <Modal show={show} onHide={handleClose} className="confirm-modal">
       <Modal.Header closeButton >
-        <Modal.Title>Confirm Submission</Modal.Title>
+        <Modal.Title>Please Confirm</Modal.Title>
       </Modal.Header>
       <Modal.Body>{confirmMessage}</Modal.Body>
       <Modal.Footer>

@@ -1,3 +1,24 @@
+/**
+ * TicketDisplay
+ * 
+ * The `TicketDisplay` component is responsible for displaying the details of a selected support ticket.
+ * It allows users to view ticket details, change the status of the ticket, delete the ticket, and 
+ * submit replies to the ticket. The component conditionally renders different elements based on 
+ * the status of the ticket.
+ * 
+ * @param {{
+*   selectedTicket: Ticket | null;
+*   reply: string;
+*   handleChangeStatus: (status: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => void;
+*   changeStatus: (ticket: Ticket, status: 'NEW' | 'IN_PROGRESS' | 'RESOLVED') => void;
+*   handleDeleteTicket: () => void;
+*   handleSubmitReply: () => void;
+*   setReply: (reply: string) => void;
+* }} props - The props for the component.
+* 
+* @returns {JSX.Element} The rendered `TicketDisplay` component.
+*/
+
 import React from 'react';
 import '@components/TicketDisplay/TicketDisplay.css'
 import TicketDropDown from '@components/TicketDropDown/TicketDropDown'
