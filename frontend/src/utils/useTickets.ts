@@ -14,7 +14,7 @@
 * 
 */
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Ticket } from '@customTypes/interfaces';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -23,7 +23,7 @@ export const useTickets = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const getTickets = () => {
+  const getTickets = useCallback(() => {
     setIsLoading(true);
     fetch(`${API_BASE_URL}/support-tickets/`)
       .then(response => response.json())
@@ -32,10 +32,6 @@ export const useTickets = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  };
-
-  useEffect(() => {
-    getTickets();
   }, []);
 
   return { tickets, isLoading, getTickets, setTickets };

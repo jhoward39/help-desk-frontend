@@ -20,7 +20,7 @@ const BackOfficeApp: React.FC = () => {
 
   useEffect(() => {
     getTickets();
-  },[])
+  }, [getTickets]);
 
   const handleTicketSelect = (ticket: Ticket) => {
     if (selectedTicket?.is_reply_draft && reply !== '') {
