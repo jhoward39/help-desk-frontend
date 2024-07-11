@@ -1,0 +1,43 @@
+.ticket-detail {
+  margin-bottom: 0;
+}
+
+.ticket-detail-description {
+  margin-top: 8px;
+}
+
+.ticket-detail {
+  word-wrap: break-word; /* Break long words */
+  word-break: break-all; /* Force break all words if necessary */
+}
+
+.ticket-reply-field {
+  background: rgba(33, 33, 33, .8);
+  color: white;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin-top: 8px;
+  padding: 10px;
+  width: 100%;
+  height: 16vh; 
+  resize: none !important; 
+}
+
+.submit-reply-button{
+  margin-top: 8px;
+  padding: 8px;
+  width: 20%;
+  cursor: pointer;
+  background-color: #ADE4C0;
+  color: black;
+  font-weight:600;
+  border-radius: 20px;
+  border: 1px solid rgba(33, 33, 33, .8);
+  min-width: fit-content;
+}
+
+.ticket-detail-header{
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,35 @@
+.ticket-dropdown .dropdown-toggle::after {
+  display: none !important; /* Remove default arrow */
+}
+
+.ticket-dropdown{
+  display: flex;
+  padding: 8px 
+}
+
+#ticket-dropdown-toggle {
+  background: none;
+  border: none;
+  padding: 2px;
+  color: var(--bs-black);
+}
+
+.dropdown-menu {
+  background-color: rgba(172, 178, 180, 0.8);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.change-status-button {
+  font-weight: 600;
+  color: black !important; /* Prevent bootstrap from turning text white on click*/
+}
+
+.dropdown-item:hover{
+  background-color: rgba(173, 228, 192, 0.6);
+}
+
+.delete-ticket-button{
+  font-weight: 600;
+  color: red !important;
+}

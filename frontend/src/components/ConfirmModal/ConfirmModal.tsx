@@ -21,7 +21,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ show, confirmMessage, handl
         <Button className="modal-cancel" onClick={handleClose}>
           Cancel
         </Button>
-        <Button className="modal-confirm" onClick={handleConfirm}>
+        <Button className="modal-confirm" onClick={handleConfirm} onMouseUp={handleClose}>
           Confirm
         </Button>
       </Modal.Footer>
