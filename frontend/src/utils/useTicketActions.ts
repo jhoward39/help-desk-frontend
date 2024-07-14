@@ -59,7 +59,7 @@ export const useTicketActions = (tickets: Ticket[], setTickets: (tickets: Ticket
      headers: {
        'Content-Type': 'application/json',
      },
-     body: JSON.stringify({ reply, is_reply_draft: isDraft }),
+     body: JSON.stringify({ reply, is_reply_draft: isDraft, status: 'RESOLVED'}),
    });
    const updatedTicket = await response.json();
    setTickets(tickets.map(t => (t.id === updatedTicket.id ? updatedTicket : t)));
